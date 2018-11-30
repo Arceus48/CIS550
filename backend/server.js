@@ -30,7 +30,7 @@ connection.connect(err => {
 
 // handle requests
 app.get('/',(req, res) => res.send("This is my mainpage"));
-app.get('/display',(req, res) => display.handleDisplay(connection))
+app.get('/display', display.handleDisplay(connection));
 
 
 // setup listen port
