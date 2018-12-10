@@ -5,6 +5,8 @@ const cors = require('cors');
 
 // import handlers
 const display = require('./controllers/display');
+const welcome = require('./controllers/welcome');
+const information = require('./controllers/information');
 
 // middleware
 const app = express();
@@ -12,18 +14,16 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // connect to database
+const dbconfig = require('./config.js');
 const mysql = require('mysql');
-const connection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'root',
-    password : '',
-    database : 'CIS550'
-});
+const connection = mysql.createConnection(dbconfig);
+
 connection.connect(err => {
     if(err){
         console.log(err.code);
         console.log(err.fatal);
-    }else{
+    }
+    else{
         console.log("successfully connected to database");
     }
 })
@@ -31,7 +31,8 @@ connection.connect(err => {
 // handle requests
 app.get('/',(req, res) => res.send("This is my mainpage"));
 app.get('/display', display.handleDisplay(connection));
-
+app.post('/welcome', welcome.handleWelcome(connection));
+app.post('/information', information.handleInformation(connection));
 
 // setup listen port
 const PORT = process.env.PORT || 3001;

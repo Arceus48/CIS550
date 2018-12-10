@@ -1,0 +1,12 @@
+.targetSelect{
+    background: #bd2130;
+    color: #fff;
+}
+
+.targetSelect option{
+    background: #dc3545; color: #fff;
+}
+
+#reviewScore.form-control {
+    color: black;
+}
