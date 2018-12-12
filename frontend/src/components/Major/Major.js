@@ -55,6 +55,11 @@ class Major extends Component {
         this.setState({results: results});
     }
 
+
+    handleFilterSide = (name, business_id) => { 
+        this.props.returnInfo(name, business_id);
+    }
+
     handleThirdPage = (event) => {
         const name = event.target.name;
         const business_id = event.target.value;
@@ -70,6 +75,8 @@ class Major extends Component {
                                     handleFilterHygiene = {this.handleFilterHygiene}
                                     handleFilterParking = {this.handleFilterParking}
                                     handleFilterOpening = {this.handleFilterOpening}
+                                    handleFilterSide  = {this.handleFilterSide}
+                                    results = {this.state.results}
                                     />
                     </div>
                     <div className="right">

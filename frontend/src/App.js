@@ -6,7 +6,8 @@ import RestaurantInformation from './components/RestaurantInformation/Restaurant
 import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
 
-const backendUrl = 'http://localhost:3001/';
+const backendUrl = 'http://ec2-18-212-153-96.compute-1.amazonaws.com:3000/';
+// const backendUrl = 'http://localhost:3001/'
 const messageSetting = { position: 'bottom', timeout: 5000};
 const initialState = {
   route : "welcome",
@@ -15,10 +16,10 @@ const initialState = {
     address : '',
   },
   results : [],
-  name:'',
-  business_id:'',
-  // name:'17 SOUTH BOOZE & BITES BAR',
-  // business_id:'dNRbhJt4wd-ZU4lFVK3iiw',
+  // name:'',
+  // business_id:'',
+  name:'17 SOUTH BOOZE & BITES BAR',
+  business_id:'dNRbhJt4wd-ZU4lFVK3iiw',
 }
 class App extends Component {
   constructor(){
@@ -81,7 +82,7 @@ class App extends Component {
          ? <Welcome handleWelcome = {this.handleWelcome} />
          : (this.state.route === 'major') ?
             <Major returnInfo={this.returnInfo} results={this.state.results} />
-            : <RestaurantInformation results={this.state.results} />
+            : <RestaurantInformation results={this.state.results} returnInfo={this.returnInfo}/>
        }
        <Alert stack={{limit: 3}}  html={true}/>
       </div>

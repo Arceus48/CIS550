@@ -164,7 +164,9 @@ html {
   .restaurant_info .bgimages{
       width:100%;
       height: 340px;
+      /* 
       background-image:url(images/cafe.jpg), url(images/lala.jpg), url(images/jap.jpg);
+      */
       background-position:center top, right top, left top;
       background-repeat:no-repeat,no-repeat, no-repeat;
       background-size: 33.3%, 33.3%, 33.3%;

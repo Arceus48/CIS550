@@ -10,3 +10,22 @@
 #reviewScore.form-control {
     color: black;
 }
+
+.sideList button[type=button]{
+    width: 100%;
+    font-size: 15px;
+    padding: 5px;
+    margin: 1px;
+    text-align: left;
+}
+
+
+.radioButtonClass input{
+    padding: 10px;
+    margin-left: 10px;
+}
+
+.sideList button[type=button]{
+    font-size: 16px;
+    font-weight: 500; 
+}

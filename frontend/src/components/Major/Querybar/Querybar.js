@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import './Querybar.css';
 
 const initialState = {
+    parkingState : false,
+    openingState : false
 }
 class Querybar extends Component {
     
@@ -10,18 +12,43 @@ class Querybar extends Component {
         this.state = initialState;
     }
 
+    handleRadioButtonParking = (event) => {
+        // const parkingState = (event.target.value === "1") ? true : false;
+        // this.setState({parkingState : parkingState});
+    }
+    handleRadioButtonOpening = (event) => {
+        // const openingState = (event.target.value === "1") ? true: false;
+        // this.setState({openingState : openingState});
+    }
+
     render(){
-        const { handleFilterReview, handleFilterHygiene, handleFilterParking, handleFilterOpening } = this.props;
+        const { results, handleFilterReview, handleFilterHygiene, handleFilterParking, handleFilterOpening, handleFilterSide  } = this.props;
+        const filteredNames = [];
+        const filteredBusiness_id = [];
+        if(results){
+            for(let i = 0; i < results.length; i++){
+                const { business_id, restaurant_name } = results[i];
+                if(filteredNames.indexOf(restaurant_name) === -1){
+                    filteredNames.push(restaurant_name);
+                    filteredBusiness_id.push(business_id);
+                }
+            }
+        }
+        const sideList = filteredNames.map((name, index) => {
+            return(
+                <button type="button" 
+                        key={index} 
+                        onClick={() => handleFilterSide(name,filteredBusiness_id[index])}> 
+                        {index+1}. {name} 
+                </button>
+            )
+        }).slice(0,10);
+        
+        // const { parkingState, openingState } = this.state;
         return (
             <div className="Querybar">
                 <div className="container">
                     <form className="form-horizontal" action="/action_page.php">
-                        <div className="form-group">
-                            <label className="control-label" htmlFor="category"><b>Category:</b></label>
-                            <div className="">
-                            <input type="text" className="form-control" id="category" placeholder="Enter category" name="category" />
-                            </div>
-                        </div>
                         <div className="form-group">
                             <label className="control-label" htmlFor="score"><b>Review Score:</b></label>
                             <div className="">
@@ -38,13 +65,14 @@ class Querybar extends Component {
                         <div className="form-group">
                             <label className="control-label" htmlFor="hygiene"><b>Hygiene:</b> </label>
                             <div className="">
-                            <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                            <form className="radioButtonClass" action="/action_page.php">
                                 <input  className="btn btn-secondary btn-danger active"
                                         type="radio"
                                         name="hygiene" 
                                         value="B" 
                                         id="hygiene-lo" 
                                         autoComplete="off" 
+                                        defaultChecked={true}
                                         onClick={handleFilterHygiene} /> Low
                                 <input  className="btn btn-secondary btn-danger"
                                         type="radio" 
@@ -53,49 +81,61 @@ class Querybar extends Component {
                                         id="hygiene-hi" 
                                         autoComplete="off"
                                         onClick={handleFilterHygiene} /> High
-                            </div>
+                            </form>
                             </div>
                         </div>
                         <div className="form-group">
                             <label className="control-label" htmlFor="parking"><b>Parking:</b> </label>
                             <div className="">
-                            <div className="btn-group btn-group-toggle" data-toggle="buttons" >
+                            <form className="radioButtonClass" action="/action_page.php">
                                 <input  className="btn btn-secondary btn-danger active" 
                                         type="radio" 
                                         value="1" 
-                                        name="options" 
+                                        name="parking" 
                                         id="parking-yes" 
                                         autoComplete="off" 
-                                        onClick={handleFilterParking} /> Yes
+                                        onClick={(event) => {handleFilterParking(event); this.handleRadioButtonParking(event)}}
+                                        // checked = {parkingState}
+                                        /> Yes
                                 <input  className="btn btn-secondary btn-danger" 
                                         type="radio" 
                                         value="0" 
-                                        name="options" 
+                                        name="parking" 
                                         id="parking-no" 
                                         autoComplete="off" 
-                                        onClick={handleFilterParking} /> Not Necessary
-                            </div>
+                                        onClick={(event) => {handleFilterParking(event); this.handleRadioButtonParking(event)}}
+                                        defaultChecked={true}
+                                        //checked = {!parkingState}
+                                        /> Not Necessary
+                            </form>
                             </div>
                         </div>
                         <div className="form-group">
                             <label className="control-label" htmlFor="is_open"><b>Opening Now:</b> </label>
                             <div className="">
-                            <div className="btn-group btn-group-toggle" data-toggle="buttons" >
+                            <form className="radioButtonClass" action="/action_page.php">
                                 <input  type="radio" 
-                                        name="options" 
+                                        name="isopen" 
                                         value="1"
                                         id="is_open-yes" 
                                         autoComplete="off" 
-                                        onClick={handleFilterOpening} /> Yes
+                                        // checked = {openingState}
+                                        onClick={(event) => {handleFilterOpening(event); this.handleRadioButtonOpening(event)}} /> Yes
                                 <input  type="radio" 
-                                        name="options" 
+                                        name="isopen" 
                                         value="0"
                                         id="is_open-no" 
                                         autoComplete="off" 
-                                        onClick={handleFilterOpening} /> Not Necessary
-                                
+                                        defaultChecked={true}
+                                        // checked = {!openingState}
+                                        onClick={(event) => {handleFilterOpening(event); this.handleRadioButtonOpening(event)}} /> Not Necessary
+                            
+                            </form>
                             </div>
-                            </div>
+                        </div>
+                        
+                        <div className="form-group sideList">
+                            {sideList}
                         </div>
                     </form>
                 </div>

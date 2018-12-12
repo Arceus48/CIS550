@@ -7,7 +7,6 @@ const handleWelcome = (connection) => (req, res) => {
                     WHERE r.restaurant_name LIKE "${name}%" 
                         AND r.address LIKE "${address}%" 
                     LIMIT 500`;
-    // console.log(query);
     connection.query(query, (err, rows, fields) => {
         if(err){
             console.log("An error ocurred performing the query.");

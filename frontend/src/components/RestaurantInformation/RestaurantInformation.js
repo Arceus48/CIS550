@@ -1,15 +1,69 @@
 import React, { Component } from 'react';
 import './RestaurantInformation.css';
 import logo from './images/logo.png';
-import cafe from './images/cafe.jpg';
+// import cafe from './images/cafe.jpg';
+import Alert from 'react-s-alert';
+import 'react-s-alert/dist/s-alert-default.css';
+const messageSetting = { position: 'bottom', timeout: 5000};
 
+const backendUrl = 'http://ec2-18-212-153-96.compute-1.amazonaws.com:3000/';
+// const backendUrl = 'http://localhost:3001/'
 class RestaurantInformation extends Component {
     constructor(){
         super()
         this.state = {
-            results : {}
+            results: {},
+            recommendation: {}
         };
     }
+
+    updateInfo = (name, business_id) => {
+        fetch(backendUrl + 'information', {
+          method: 'post',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            name: name,
+            business_id: business_id
+          })
+        })
+        .then(response => response.json())
+        .then(response => {
+          if(response === "error"){
+            Alert.error('Error connecting server', messageSetting);
+          } 
+          else{
+            this.setState({results : response });
+          }
+        })
+        .catch(err => Alert.error('Error connecting server', messageSetting));
+        window.scrollTo(0, 0);
+
+        // below is repeated
+        fetch(backendUrl + 'recommendation', {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                name: name,
+                business_id: business_id
+            })
+          })
+          .then(response => response.json())
+          .then(response => {
+            if(response === "error"){
+              // Alert.error('Can\'t get recommendations, messageSetting);
+            } 
+            else if(response.length === 0){
+              // Alert.warning('No Matching data found', messageSetting);
+            }
+            else {
+                this.setState({
+                  recommendation: response
+                });
+            }
+          })
+          .catch(err => console.log(err)/* Alert.error('Error connecting server', messageSetting) */ );
+    }
+
     changeStar = (stars) => {
         for(let i = 0; i < stars; i++){
             document.getElementById("star[" + i + "]").className="fa fa-star checked";
@@ -19,7 +73,31 @@ class RestaurantInformation extends Component {
         }
     }
     componentDidMount(){
-        this.setState({results : this.props.results})
+        this.setState({results : this.props.results});
+        const { restaurant_name, business_id } = this.props.results.generalInfo[0];
+        fetch(backendUrl + 'recommendation', {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                name: restaurant_name,
+                business_id: business_id
+            })
+          })
+          .then(response => response.json())
+          .then(response => {
+            if(response === "error"){
+              // Alert.error('Can\'t get recommendations, messageSetting);
+            } 
+            else if(response.length === 0){
+              // Alert.warning('No Matching data found', messageSetting);
+            }
+            else {
+                this.setState({
+                  recommendation: response
+                });
+            }
+          })
+          .catch(err => console.log(err)/* Alert.error('Error connecting server', messageSetting) */ );
     }
     popUp = (displayStyle) => {
         document.getElementById('id01').style.display= displayStyle;
@@ -27,7 +105,7 @@ class RestaurantInformation extends Component {
 
     render(){
         const { generalInfo, reviews, violations, photos, inspection, category } = this.state.results;
-        
+    
         // general info
         let restaurant_name, address, is_open, take_out, parking;
         if(generalInfo && generalInfo.length > 0){
@@ -95,6 +173,42 @@ class RestaurantInformation extends Component {
             categoryTag = category.map(((val,index) => val.category + ", "))
                                 .reduce((a,b) => a + b);
             categoryTag = categoryTag.slice(0, -2);
+        }
+        // background images
+        const bgElement = document.getElementsByClassName("bgimages")[0];
+        if(bgElement){
+            bgElement.style.backgroundImage = `url("${imgUrl[0]}"), url("${imgUrl[1]}"), url("${imgUrl[2]}")`;
+        }
+
+        // recommendation
+        const recommendationNames = [
+            'Bowen\'s Restauraunt',
+            'Arceus\'s Restaurant',
+            'Henry\'s Restaurant',
+        ]
+        const recommendationBusiness_id = [
+            '0',
+            '1',
+            '2',
+        ]
+        const recommendationUrl = [
+            baseUrl + 'bg38QW77pERfZL1uSv9_6w.jpg',
+            baseUrl + 'Blfwdjpsh_dOXrVVBnxqhw.jpg',
+            baseUrl + 'BOQ5v6hfR_6keoFF3J-hIw.jpg',
+        ]
+        const recName = this.state.recommendation.recommendationName;
+        const recUrl = this.state.recommendation.recommendationPhoto;
+        // console.log(this.state.recommendation);
+        if(recName){
+            for(let i = 0; i < recName.length; i++){
+                recommendationNames[i] = recName[i].restaurant_name;
+                recommendationBusiness_id[i] = recName[i].business_id;
+            }
+        }
+        if(recUrl) {
+            for(let i = 0; i < recUrl.length; i++){
+                recommendationUrl[i] = baseUrl + recUrl[i].photo_id + '.jpg';
+            }
         }
 
         return(
@@ -270,32 +384,32 @@ class RestaurantInformation extends Component {
                             <span className="heading">Recommendations</span>
                             <br />
                             <br />
-                            <a href="index.html">
+                            <div onClick = {() => this.updateInfo(recommendationNames[0], recommendationBusiness_id[0])} >
                                 <div className="container">
-                                    <img src={cafe} alt="Avatar" className="image" />
+                                    <img src={recommendationUrl[0]} alt="Avatar" className="image" />
                                     <div className="overlay">
-                                        <div className="text">Hello World</div>
+                                        <div className="text">{recommendationNames[0]}</div>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
 
-                            <a href="index.html">
+                            <div onClick = {() => this.updateInfo(recommendationNames[1], recommendationBusiness_id[1])} >
                                 <div className="container">
-                                    <img src={cafe} alt="Avatar" className="image" />
+                                    <img src={recommendationUrl[1]} alt="Avatar" className="image" />
                                     <div className="overlay">
-                                        <div className="text">Hello World</div>
+                                        <div className="text">{recommendationNames[1]}</div>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
 
-                            <a href="google.com">
+                            <div onClick = {() => this.updateInfo(recommendationNames[2], recommendationBusiness_id[2])} >
                                 <div className="container">
-                                    <img src={cafe} alt="Avatar" className="image" />
+                                    <img src={recommendationUrl[2]} alt="Avatar" className="image" />
                                     <div className="overlay">
-                                        <div className="text">Hello World</div>
+                                        <div className="text">{recommendationNames[2]}</div>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         </section>
 
                     </div>

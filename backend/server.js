@@ -7,6 +7,7 @@ const cors = require('cors');
 const display = require('./controllers/display');
 const welcome = require('./controllers/welcome');
 const information = require('./controllers/information');
+const recommendation = require('./controllers/recommendation');
 
 // middleware
 const app = express();
@@ -33,6 +34,7 @@ app.get('/',(req, res) => res.send("This is my mainpage"));
 app.get('/display', display.handleDisplay(connection));
 app.post('/welcome', welcome.handleWelcome(connection));
 app.post('/information', information.handleInformation(connection));
+app.post('/recommendation', recommendation.handleRecommendation(connection));
 
 // setup listen port
 const PORT = process.env.PORT || 3001;

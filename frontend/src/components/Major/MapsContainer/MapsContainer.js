@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
+import './MapsContainer.css';
+
 const mapStyles = {
     width: '100%',
     height: '100%'
