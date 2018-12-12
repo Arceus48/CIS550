@@ -31,7 +31,7 @@ class Welcome extends React.Component {
                             </div>
                         </div>
                         <div className="hero-text">
-                            <img src={logo} id = "logoImage"/>
+                            <img src={logo} id = "logoImage" alt="logo" />
                             <div>
                                 <input type="text" placeholder="Search.." name="search" onChange={this.onChangeSearch} />
                                 <input type="text" placeholder="Near.." name="location" onChange={this.onChangeAddress}/>
