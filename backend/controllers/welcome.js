@@ -5,7 +5,7 @@ const handleWelcome = (connection) => (req, res) => {
                     JOIN yelp_business y ON r.business_id = y.business_id 
                     JOIN inspection_record i ON r.restaurant_name = i.restaurant_name
                     WHERE r.restaurant_name LIKE "${name}%" 
-                        AND r.address LIKE "${address}%" 
+                        AND r.address LIKE "%${address}%" 
                     LIMIT 500`;
     connection.query(query, (err, rows, fields) => {
         if(err){

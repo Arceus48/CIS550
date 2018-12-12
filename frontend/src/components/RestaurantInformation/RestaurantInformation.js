@@ -4,10 +4,10 @@ import logo from './images/logo.png';
 // import cafe from './images/cafe.jpg';
 import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
+import configServer from '../.././configServer.js';
 const messageSetting = { position: 'bottom', timeout: 5000};
 
-const backendUrl = 'http://ec2-18-212-153-96.compute-1.amazonaws.com:3000/';
-// const backendUrl = 'http://localhost:3001/'
+const backendUrl = configServer.url;
 class RestaurantInformation extends Component {
     constructor(){
         super()

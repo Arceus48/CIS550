@@ -5,9 +5,9 @@ import Major from './components/Major/Major';
 import RestaurantInformation from './components/RestaurantInformation/RestaurantInformation';
 import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
+import configServer from './configServer.js';
 
-const backendUrl = 'http://ec2-18-212-153-96.compute-1.amazonaws.com:3000/';
-// const backendUrl = 'http://localhost:3001/'
+const backendUrl = configServer.url;
 const messageSetting = { position: 'bottom', timeout: 5000};
 const initialState = {
   route : "welcome",
