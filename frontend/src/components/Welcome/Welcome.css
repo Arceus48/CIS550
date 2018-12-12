@@ -68,3 +68,8 @@
 .welcome{
     height: 100%;
 }
+
+#logoImage{
+    max-width: 75%;
+    margin-top: 50%;
+}

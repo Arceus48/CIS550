@@ -1,5 +1,6 @@
 import React from 'react';
 import './Welcome.css';
+import logo from './logo.png';
 
 class Welcome extends React.Component {
     constructor(props){
@@ -30,8 +31,7 @@ class Welcome extends React.Component {
                             </div>
                         </div>
                         <div className="hero-text">
-                            <h1>Delicious Map</h1>
-                            <p>Specially designed for food safety and taste.</p>
+                            <img src={logo} id = "logoImage"/>
                             <div>
                                 <input type="text" placeholder="Search.." name="search" onChange={this.onChangeSearch} />
                                 <input type="text" placeholder="Near.." name="location" onChange={this.onChangeAddress}/>
